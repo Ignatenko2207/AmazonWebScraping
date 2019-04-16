@@ -24,9 +24,9 @@ public class ApplicationRunner {
 		keyword = keyword.trim();
 		keyword = keyword.replaceAll(" ", "+");
 		
-//		List<Item> items = ScrapingService.getItemsByJsoup(keyword);
-		List<Item> items = ScrapingService.getItemsBySelenium(keyword);
-		
+		List<Item> items = ScrapingService.getItemsByJsoup(keyword);
+//		List<Item> items = ScrapingService.getItemsBySelenium(keyword);
+
 		FileService.writeListToFile(items);
 	}
 }

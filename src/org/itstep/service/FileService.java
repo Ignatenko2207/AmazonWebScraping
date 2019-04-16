@@ -17,7 +17,7 @@ public class FileService {
 			System.getProperty("file.separator") + 
 			"files" +
 			System.getProperty("file.separator") +
-			"temp-html.txt";
+			"temp.html";
 	
 	public static void writeListToFile(List<Item> items) {
 		try (FileWriter writer = new FileWriter(FILE_PATH, true)){

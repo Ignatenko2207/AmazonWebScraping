@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.itstep.model.Item;
 import org.itstep.util.Timer;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -53,6 +54,13 @@ public class ScrapingService {
 		
 		return driver;
 	}
+	
+	
+	
+	
+	
+	
+	
 
 	public static List<Item> getItemsByJsoup(String keyword) {
 
@@ -61,7 +69,14 @@ public class ScrapingService {
 		String url = String.format("https://www.amazon.com/s?k=%s&ref=nb_sb_noss_2", keyword);
 
 		try {
-			Document document = Jsoup.connect(url).get();
+			Connection connection = Jsoup.connect(url);
+			connection.request().addHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");			
+			connection.request().addHeader("accept-encoding", "gzip, deflate, br");			
+			connection.request().addHeader("accept-language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7,uk;q=0.6,de;q=0.5");			
+			connection.request().addHeader("cache-control", "no-cache");			
+			connection.request().addHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36");			
+			
+			Document document = connection.get();
 
 			FileService.writeHTML(document.html());
 
