@@ -69,11 +69,11 @@ public class ScrapingService {
 			Elements itemSearchElements = searchDiv.getElementsByAttribute("data-asin");
 			for (Element element : itemSearchElements) {
 				String asin = element.attr("data-asin");
-				String name = getName(element);
-				String itemUrl = getItemUrl(element);
-				String imgUrl = getImgUrl(element);
-				Integer price = getPrice(element);
-				Integer initPrice = getInitPrice(element);
+				String name = getNameByJsoup(element);
+				String itemUrl = getItemUrlByJsoup(element);
+				String imgUrl = getImgUrlByJsoup(element);
+				Integer price = getPriceByJsoup(element);
+				Integer initPrice = getInitPriceByJsoup(element);
 
 				Item item = new Item(asin, name, itemUrl, imgUrl, price, initPrice);
 				items.add(item);
@@ -84,7 +84,7 @@ public class ScrapingService {
 		return items;
 	}
 
-	private static Integer getInitPrice(Element element) {
+	private static Integer getInitPriceByJsoup(Element element) {
 		Elements priceElements = element.getElementsByClass("a-offscreen");
 		if (priceElements.size() > 1) {
 			Element priceElement = priceElements.get(1);
@@ -97,7 +97,7 @@ public class ScrapingService {
 		return null;
 	}
 
-	private static Integer getPrice(Element element) {
+	private static Integer getPriceByJsoup(Element element) {
 		Element priceElement = element.getElementsByClass("a-offscreen").first();
 		String textPrice = priceElement.text();
 		textPrice = textPrice.replaceAll("\\D", "");
@@ -107,7 +107,7 @@ public class ScrapingService {
 		return Integer.parseInt(textPrice);
 	}
 
-	private static String getImgUrl(Element element) {
+	private static String getImgUrlByJsoup(Element element) {
 		Element imgLinkElement = element.getElementsByAttribute("data-image-latency").first();
 		if (imgLinkElement.hasAttr("src")) {
 			String imgLink = imgLinkElement.attr("src");
@@ -119,7 +119,7 @@ public class ScrapingService {
 		return "";
 	}
 
-	private static String getItemUrl(Element element) {
+	private static String getItemUrlByJsoup(Element element) {
 		Element linkElement = element.getElementsByClass("a-link-normal a-text-normal").first();
 		String link = linkElement.attr("href");
 		if (!link.startsWith("https://www.amazon.com")) {
@@ -128,7 +128,7 @@ public class ScrapingService {
 		return link;
 	}
 
-	private static String getName(Element element) {
+	private static String getNameByJsoup(Element element) {
 		Element linkElement = element.getElementsByClass("a-link-normal a-text-normal").first();
 		return linkElement.text();
 	}
